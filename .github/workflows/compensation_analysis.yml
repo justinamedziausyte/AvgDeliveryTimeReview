@@ -1,0 +1,37 @@
+name: Run Compensation Analysis
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 0'  # Runs every Sunday at midnight
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas matplotlib
+
+    - name: Run compensation analysis
+      run: |
+        python compensation_analysis.py
+
+    - name: Upload analysis results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: analysis-results
+        path: output/
