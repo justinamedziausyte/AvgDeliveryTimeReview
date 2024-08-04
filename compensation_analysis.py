@@ -136,4 +136,5 @@ def main():
         # Perform seasonal pattern analysis and save plot
         analyze_seasonal_patterns(df)
 
-if __name__ == 
+if __name__ == "__main__":
+    main()
