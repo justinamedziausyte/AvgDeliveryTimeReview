@@ -5,7 +5,7 @@ import os
 # Constants
 INPUT_CSV_1 = 'shipping_data_1.csv'
 INPUT_CSV_2 = 'shipping_data_2.csv'
-RESULTS_FILE = 'compensation_analysis_results.txt'
+RESULTS_FILE = 'output/compensation_analysis_results.txt'  # Ensure this path is correct
 OUTPUT_DIR = 'output'
 
 def create_output_dir():
@@ -32,6 +32,7 @@ def preprocess_data(df):
 
 def analyze_compensations(df):
     """Analyze compensation data and write results to a file."""
+    print("Starting analysis of compensations...")
     with open(RESULTS_FILE, 'w') as f:
         # Filter out rows without compensation
         compensation_df = df.dropna(subset=['total_compensation'])
@@ -87,6 +88,7 @@ def analyze_compensations(df):
         print(compensation_by_reason_summary)
         f.write("\n\nCompensation by Reason Summary:\n")
         f.write(compensation_by_reason_summary)
+    print("Compensation analysis completed and saved to file.")
 
 def analyze_seasonal_patterns(df):
     """Perform seasonal pattern analysis and create stacked area chart."""
@@ -116,25 +118,25 @@ def analyze_seasonal_patterns(df):
     plt.legend(title='Compensation Reason')
     plt.savefig(os.path.join(OUTPUT_DIR, 'compensation_stacked_area.png'))
     plt.show()
+    print("Seasonal pattern analysis completed and chart saved.")
 
 def main():
     create_output_dir()
+    print("Output directory created.")
     
-    # List of input CSV files
     input_files = [INPUT_CSV_1, INPUT_CSV_2]
-    
-    # Load data
     df = load_data(input_files)
+    print("Data loaded.")
     
     if df is not None:
-        # Preprocess data
         df = preprocess_data(df)
-
-        # Analyze compensations and write results to file
-        analyze_compensations(df)
+        print("Data preprocessed.")
         
-        # Perform seasonal pattern analysis and save plot
+        analyze_compensations(df)
+        print("Compensation analysis completed.")
+    
         analyze_seasonal_patterns(df)
-
+        print("Seasonal pattern analysis completed.")
+    
 if __name__ == "__main__":
     main()
