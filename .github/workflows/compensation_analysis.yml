@@ -8,7 +8,7 @@ on:
     - cron: '0 0 * * 0'  # Runs every Sunday at midnight
 
 jobs:
-  analysis:
+  compensation-analysis:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,20 +18,33 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.8' 
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pandas matplotlib
 
+    - name: Verify directory structure
+      run: |
+        echo "Listing root directory:" 
+        ls -al /
+        echo "Listing home directory:"
+        ls -al ~/
+        echo "Listing current directory:"
+        ls -al
+
     - name: Run compensation analysis
       run: |
         python compensation_analysis.py
 
+    - name: List files in output directory
+      run: |
+        ls -al output/
+
     - name: Upload analysis results
       if: always()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
-        name: analysis-results
+        name: compensation-analysis-results
         path: output/
