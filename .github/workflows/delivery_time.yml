@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * 0'  # Runs every Sunday at midnight
 
 jobs:
   analysis:
@@ -16,7 +18,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.8'  # or whichever version you require
 
     - name: Install dependencies
       run: |
@@ -25,11 +27,15 @@ jobs:
 
     - name: Run delivery time analysis
       run: |
-        python delivery_time_analysis.py  # Assuming it's in the root directory
+        python delivery_time_analysis.py
+
+    - name: List files in results directory
+      run: |
+        ls -al results/
 
     - name: Upload analysis results
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: analysis-results
-        path: output/
+        path: results/
