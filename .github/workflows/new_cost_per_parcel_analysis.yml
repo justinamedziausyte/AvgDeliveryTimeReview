@@ -1,36 +1,50 @@
-
-name: Run New Cost Per Parcel Analysis
+name: Run Cost Per Parcel Analysis
 
 on:
   push:
     branches:
-      - main  # Change this to your branch name if necessary
-  pull_request:
-    branches:
       - main
+  schedule:
+    - cron: '0 2 * * 1'  # Runs every Monday at 2:00 AM
 
 jobs:
-  run_analysis:
+  cost-per-parcel-analysis:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'  # Specify the Python version you need
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8' 
 
-      - name: Install dependencies
-        run: |
-          pip install pandas
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas
 
-      - name: Run analysis script
-        run: python new_cost_per_parcel_analysis.py
-      
-      - name: Upload results
-        uses: actions/upload-artifact@v2
-        with:
-          name: cost-per-parcel-results
-          path: new_cost_per_parcel_analysis.csv
+    - name: Verify directory structure
+      run: |
+        echo "Listing root directory:" 
+        ls -al /
+        echo "Listing home directory:"
+        ls -al ~/
+        echo "Listing current directory:"
+        ls -al
+
+    - name: Run cost per parcel analysis
+      run: |
+        python new_cost_per_parcel_analysis.py
+
+    - name: List files in output directory
+      run: |
+        ls -al output/
+
+    - name: Upload analysis results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: cost-per-parcel-results
+        path: output/
