@@ -25,7 +25,7 @@ jobs:
 
     - name: Run delivery time analysis
       run: |
-        python delivery_time_analysis.py
+        python delivery_time_analysis.py  # Assuming it's in the root directory
 
     - name: Upload analysis results
       if: always()
