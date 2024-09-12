@@ -40,7 +40,7 @@ def calculate_metrics(df):
 
     # Calculate metrics
     metrics['avg_delivery_time'] = df['delivery_time_business_days'].mean()
-    expected_delivery_days = 5  # Adjust as necessary
+    expected_delivery_days = 7  # Adjust as necessary
     metrics['on_time_delivery_rate'] = (df['delivery_time_business_days'] <= expected_delivery_days).mean() * 100
     metrics['late_delivery_rate'] = (df['delivery_time_business_days'] > expected_delivery_days).mean() * 100
     metrics['cs_ticket_rate'] = df['has_marketplace_cs_ticket'].mean() * 100
