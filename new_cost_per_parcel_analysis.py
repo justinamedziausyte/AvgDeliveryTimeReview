@@ -1,14 +1,20 @@
 import pandas as pd
+import os
 
 # Constants
 INPUT_CSV_1 = 'shipping_data_1.csv'
 INPUT_CSV_2 = 'shipping_data_2.csv'
 ORIGINAL_COST_PER_PARCEL = 6.81  # in EUR
-RESULTS_FILE = 'new_cost_per_parcel_analysis.csv'
+RESULTS_FILE = 'output/new_cost_per_parcel_analysis.csv'
+OUTPUT_DIR = 'output'
+
+def create_output_dir():
+    """Create output directory if not exists."""
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
 
 def calculate_metrics(df, volume_increase_per_day):
     metrics = {}
-
     # Calculate total shipments
     total_shipments = len(df)
     
@@ -42,6 +48,8 @@ def calculate_metrics(df, volume_increase_per_day):
     return metrics
 
 def main():
+    create_output_dir()
+
     # Read CSV files and concatenate them
     dfs = [pd.read_csv(file) for file in [INPUT_CSV_1, INPUT_CSV_2]]
     df = pd.concat(dfs, ignore_index=True)
