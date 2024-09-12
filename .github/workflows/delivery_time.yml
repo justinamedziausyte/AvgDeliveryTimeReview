@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '0 0 * * 0'  # Runs every Sunday at midnight
 
 jobs:
   analysis:
@@ -27,11 +25,11 @@ jobs:
 
     - name: Run delivery time analysis
       run: |
-        python delivery_time.py
+        python delivery_time_analysis.py
 
     - name: Upload analysis results
       if: always()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: analysis-results
-        path: results/
+        path: output/
